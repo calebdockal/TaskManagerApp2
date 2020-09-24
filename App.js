@@ -46,7 +46,7 @@ const App = () => {
       Alert.alert('Error', 'Please enter a task', {text: 'Ok'});
     } else {
       setTasks((prevTasks) => {
-        return [{id: uuid(), text}, ...prevTasks];
+        return [{id: uuidv4(), text}, ...prevTasks];
       });
     }
   };

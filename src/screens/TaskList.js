@@ -33,7 +33,7 @@ const TaskList = ({
           />
         ) : (
           <Text
-            onPress={() => taskChecked(item.id, item.text)}
+            onPress={() => taskChecked(task.id, task.text)}
             style={
               checked.length ? styles.checkedTaskText : styles.listTaskText
             }>
@@ -51,10 +51,11 @@ const TaskList = ({
           ) : (
             !checked.length && (
               <Icon
+                style={{marginRight: 10}}
                 name="pencil"
                 size={20}
                 color="blue"
-                onPress={() => editItem(item.id, item.text)}
+                onPress={() => editTask(task.id, task.text)}
               />
             )
           )}
