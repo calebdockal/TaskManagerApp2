@@ -8,18 +8,24 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
-const AddTask = ({title, addTask}) => {
+const AddTask = ({addTask}) => {
   const [text, setText] = useState('');
-
   const onChange = (textValue) => setText(textValue);
+
   return (
     <View>
       <TextInput
         placeholder="Add Task"
         style={styles.input}
         onChangeText={onChange}
+        value={text}
       />
-      <TouchableOpacity style={styles.btn} onPress={() => addTask(text)}>
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={() => {
+          addTask(text);
+          setText('');
+        }}>
         <Text style={styles.btnText}>
           <Icon name="plus" size={20} /> Add Task
         </Text>
@@ -27,6 +33,7 @@ const AddTask = ({title, addTask}) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   input: {
     height: 60,
