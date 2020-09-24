@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {View, StyleSheet, Flatlist, Alert} from 'react-native';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
-import AddTask from './src/screens/AddTask';
-import TaskList from './src/screens/TaskList';
+import {AddTask} from './src/screens/AddTask';
+import {TaskList} from './src/screens/TaskList';
 
 const App = () => {
   const [tasks, setTasks] = useState([{id: uuidv4(), text: 'Task 1'}]);
@@ -22,20 +22,20 @@ const App = () => {
       });
     }
   };
-
-  return (
-    <View style={styles.container}>
-      <AddTask addTask={addTask} />
-      <Flatlist
-        data={tasks}
-        renderItem={({task}) => (
-          <TaskList item={task} deleteTask={deleteTask} />
-        )}
-      />
-    </View>
-  );
+  render() {
+    return (
+      <View style={styles.container}>
+        <AddTask addTask={addTask} />
+        <Flatlist
+          data={tasks}
+          renderItem={({task}) => (
+            <TaskList item={task} deleteTask={deleteTask} />
+          )}
+        />
+      </View>
+    );
+  }
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
