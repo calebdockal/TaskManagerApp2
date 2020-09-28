@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, FlatList, Alert} from 'react-native';
+import {View, StyleSheet, FlatList} from 'react-native';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
+import {Provider} from 'react-redux';
 
 import AddTask from './src/screens/AddTask';
 import TaskList from './src/screens/TaskList';
 import TaskInputModal from './src/screens/TaskInputModal';
+import configureStore from './src/redux/store';
+import {connect} from 'react-redux';
 
 const App = () => {
   const [tasks, setTasks] = useState([{id: uuidv4(), text: 'Task 1'}]);
@@ -45,20 +48,7 @@ const App = () => {
   };
   // add task
   const addTask = () => {
-    /**
-     * Here you make the modal visible
-     */
-
     setIsModalVisible(true);
-
-    // return
-    // if (!text) {
-    //   Alert.alert('Error', 'Please enter a task', { text: 'Ok' });
-    // } else {
-    //   setTasks((prevTasks) => {
-    //     return [{ id: uuidv4(), text }, ...prevTasks];
-    //   });
-    // }
   };
 
   const insertNewTaskHandler = (task) => {
@@ -72,9 +62,6 @@ const App = () => {
     //hide modal dialog
     setIsModalVisible(false);
 
-    /**
-     * Insert task into redux store via payload: {task: task}
-     */
     this.props.addTask({task: task});
   };
 
@@ -102,36 +89,46 @@ const App = () => {
           return [...prevTasks.filter((task) => task.id !== id), {id, text}];
         });
   };
+  const store = configureStore;
 
   return (
-    <View style={styles.container}>
-      {/**
-       * It is common convention to name a prop that does an action like so, "onAddTask"
-       * Other examples are: onPress, onTextChange, etc.
-       */}
-      <AddTask onAddTask={addTask} />
-      <FlatList
-        data={tasks}
-        renderItem={(item) => (
-          <TaskList
-            task={item}
-            deleteTask={deleteTask}
-            editTask={editTask}
-            editTaskDetail={editTaskDetail}
-            saveEditTask={saveEditTask}
-            handleEditChange={handleEditChange}
-            taskChecked={taskChecked}
-            checkedTasks={checkedTasks}
-          />
-        )}
-      />
-      <TaskInputModal
-        visible={isModalVisible}
-        onInsertNewTask={insertNewTaskHandler}
-        onCancelNewTask={cancelNewTaskHandler}
-      />
-    </View>
+    <Provider store={store}>
+      <View style={styles.container}>
+        <AddTask onAddTask={addTask} />
+        <FlatList
+          data={tasks}
+          renderItem={(item) => (
+            <TaskList
+              task={item}
+              deleteTask={deleteTask}
+              editTask={editTask}
+              editTaskDetail={editTaskDetail}
+              saveEditTask={saveEditTask}
+              handleEditChange={handleEditChange}
+              taskChecked={taskChecked}
+              checkedTasks={checkedTasks}
+            />
+          )}
+        />
+        <TaskInputModal
+          visible={isModalVisible}
+          onInsertNewTask={insertNewTaskHandler}
+          onCancelNewTask={cancelNewTaskHandler}
+        />
+      </View>
+    </Provider>
   );
+};
+const mapStateToProps = (state) => {
+  return {
+    state: state,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addTask: () => dispatch(addTask()),
+    deleteTask: () => dispatch(deleteTask()),
+  };
 };
 
 const styles = StyleSheet.create({
@@ -141,4 +138,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

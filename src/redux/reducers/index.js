@@ -1,16 +1,20 @@
 import {ADD_TASK, DELETE_TASK} from '../actions/actionTypes';
 
-export const taskReducer = (task, action) => {
+const initialState = {
+  tasks: [],
+};
+
+export const taskReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TASK:
-      return {
-        task: task,
-      };
+      return [...state, action.payload];
     case DELETE_TASK:
       const task = action.payload;
       return {
         ...state,
-        tasks: tasks.filter(tasks.id !== task.id),
+        tasks: tasks.filter((tasks) => tasks !== tasks.id),
       };
+    default:
+      return state;
   }
 };
