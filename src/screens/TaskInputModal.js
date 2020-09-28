@@ -30,7 +30,7 @@ const TaskInputModal = (props) => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            this.props.addTask({task: task});
+            props.addTask({task: task});
             console.log(this.props.state);
           }}>
           <Text style={styles.text}>Add Task</Text>
