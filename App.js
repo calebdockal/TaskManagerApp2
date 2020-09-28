@@ -7,8 +7,8 @@ import {Provider} from 'react-redux';
 import AddTask from './src/screens/AddTask';
 import TaskList from './src/screens/TaskList';
 import TaskInputModal from './src/screens/TaskInputModal';
-import configureStore from './src/redux/store';
-import {connect} from 'react-redux';
+
+import configureStore from './src/redux/store/index';
 
 const App = () => {
   const [tasks, setTasks] = useState([{id: uuidv4(), text: 'Task 1'}]);
@@ -61,8 +61,6 @@ const App = () => {
 
     //hide modal dialog
     setIsModalVisible(false);
-
-    this.props.addTask({task: task});
   };
 
   const cancelNewTaskHandler = () => {
@@ -119,17 +117,6 @@ const App = () => {
     </Provider>
   );
 };
-const mapStateToProps = (state) => {
-  return {
-    state: state,
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addTask: () => dispatch(addTask()),
-    deleteTask: () => dispatch(deleteTask()),
-  };
-};
 
 const styles = StyleSheet.create({
   container: {
@@ -138,4 +125,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

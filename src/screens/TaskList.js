@@ -7,6 +7,8 @@ import {
   TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import {addTask, deleteTask} from '../redux/actions/actions';
+import {connect} from 'react-redux';
 
 const TaskList = ({
   task,
@@ -101,5 +103,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
-
-export default TaskList;
+const mapStateToProps = (state) => {
+  return {
+    state: state,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addTask: () => dispatch(addTask()),
+    deleteTask: () => dispatch(deleteTask()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(TaskList);
