@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, FlatList, Alert } from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, FlatList, Alert} from 'react-native';
 import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 import AddTask from './src/screens/AddTask';
 import TaskList from './src/screens/TaskList';
 import TaskInputModal from './src/screens/TaskInputModal';
 
 const App = () => {
-  const [tasks, setTasks] = useState([{ id: uuidv4(), text: 'Task 1' }]);
+  const [tasks, setTasks] = useState([{id: uuidv4(), text: 'Task 1'}]);
 
   // To edit tasks
   const [editState, editStateChange] = useState(false);
@@ -33,7 +33,7 @@ const App = () => {
   const saveEditTask = (id, text) => {
     setItems((prevTasks) => {
       return prevTasks.map((task) =>
-        task.id === editTaskDetail.id ? { id, text: editTaskDetail.text } : task,
+        task.id === editTaskDetail.id ? {id, text: editTaskDetail.text} : task,
       );
     });
     editStateChange(!editState);
@@ -41,7 +41,7 @@ const App = () => {
 
   // capture text input
   const handleEditChange = (text) => {
-    editTaskDetailChange({ id: editTaskDetail.id, text });
+    editTaskDetailChange({id: editTaskDetail.id, text});
   };
   // add task
   const addTask = () => {
@@ -67,7 +67,7 @@ const App = () => {
      */
 
     //print
-    console.log("My new task is - ", task);
+    console.log('My new task is - ', task);
 
     //hide modal dialog
     setIsModalVisible(false);
@@ -75,17 +75,17 @@ const App = () => {
     /**
      * Insert task into redux store via payload: {task: task}
      */
-
-  }
+    this.props.addTask({task: task});
+  };
 
   const cancelNewTaskHandler = () => {
     //hide modal dialog
     setIsModalVisible(false);
-  }
+  };
 
   // Edit item id capture
   const editTask = (id, text) => {
-    editTaskDetailChange({ id, text });
+    editTaskDetailChange({id, text});
     return editStateChange(!editState);
   };
 
@@ -96,19 +96,19 @@ const App = () => {
     );
     isChecked.length
       ? checkedTasksChange((prevTasks) => {
-        return [...prevTasks.filter((task) => task.id !== id)];
-      })
+          return [...prevTasks.filter((task) => task.id !== id)];
+        })
       : checkedTasksChange((prevTasks) => {
-        return [...prevTasks.filter((task) => task.id !== id), { id, text }];
-      });
+          return [...prevTasks.filter((task) => task.id !== id), {id, text}];
+        });
   };
 
   return (
     <View style={styles.container}>
       {/**
-         * It is common convention to name a prop that does an action like so, "onAddTask"
-         * Other examples are: onPress, onTextChange, etc.
-         */}
+       * It is common convention to name a prop that does an action like so, "onAddTask"
+       * Other examples are: onPress, onTextChange, etc.
+       */}
       <AddTask onAddTask={addTask} />
       <FlatList
         data={tasks}
@@ -125,9 +125,11 @@ const App = () => {
           />
         )}
       />
-      <TaskInputModal visible={isModalVisible}
+      <TaskInputModal
+        visible={isModalVisible}
         onInsertNewTask={insertNewTaskHandler}
-        onCancelNewTask={cancelNewTaskHandler} />
+        onCancelNewTask={cancelNewTaskHandler}
+      />
     </View>
   );
 };
